@@ -50,7 +50,7 @@ class RocketLander(gym.Env):
     }
 
     def __init__(self, settings):
-        self._seed()
+        self.seed()
         self.viewer = None
         self.world = Box2D.b2World(gravity=(0, -GRAVITY))
         self.main_base = None
@@ -87,11 +87,11 @@ class RocketLander(gym.Env):
 
     """ INHERITED """
 
-    def _seed(self, seed=None):
+    def seed(self, seed=None):
         self.np_random, returned_seed = seeding.np_random(seed)
         return returned_seed
 
-    def _reset(self):
+    def reset(self):
         self._destroy()
         self.game_over = False
         self.world.contactListener_keepref = ContactDetector(self)
@@ -138,7 +138,7 @@ class RocketLander(gym.Env):
             self.adjust_dynamics(y_dot=y_dot, x_dot=x_dot, theta=theta, theta_dot=theta_dot)
 
         # Step through one action = [0, 0, 0] and return the state, reward etc.
-        return self._step(np.array([0, 0, 0]))[0]
+        return self.step(np.array([0, 0, 0]))[0]
 
     def _destroy(self):
         if not self.main_base: return
@@ -151,7 +151,7 @@ class RocketLander(gym.Env):
         self.world.DestroyBody(self.legs[0])
         self.world.DestroyBody(self.legs[1])
 
-    def _step(self, action):
+    def step(self, action):
         assert len(action) == 3  # Fe, Fs, psi
 
         # Check for contact with the ground
@@ -647,7 +647,7 @@ class RocketLander(gym.Env):
 
     """ RENDERING """
 
-    def _render(self, mode='human', close=False):
+    def render(self, mode='human', close=False):
         if close:
             if self.viewer is not None:
                 self.viewer.close()

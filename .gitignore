@@ -2,3 +2,6 @@
 ipynb_checkpoints/*
 .idea/*
 __pycache__/*
+.floyd*
+/logs
+/output
